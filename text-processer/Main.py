@@ -1,12 +1,14 @@
 import requests
 import re
-from SimpleTokenizerV1 import SimpleTokenizerV1
+from SimpleTokenizer import SimpleTokenizer
 
 def generate_vocab(text):
     preprocessed = re.split(r'([,.?_!"()\']|--|\s)', text)
     preprocessed = [item.strip() for item in preprocessed if item.strip()]
     all_words = sorted(list(set(preprocessed)))
+    all_words.extend(["<|endoftext|>", "<|unk|>"])
     vocab = {token: integer for integer, token in enumerate(all_words)}
+    print("vocab:", vocab)
     return vocab
 
 # get data
@@ -14,11 +16,14 @@ url = "https://raw.githubusercontent.com/rasbt/LLMs-from-scratch/main/ch02/01_ma
 response = requests.get(url)
 text = response.text
 # init tokenizer
-tokenizer = SimpleTokenizerV1(generate_vocab(text))
+tokenizer = SimpleTokenizer(generate_vocab(text))
 
 #test tokenizer
-text_shorter = """"It's the last he painted, you know," Mrs. Gisburn said with pardonable pride."""
-ids = tokenizer.encode(text_shorter)
+text1 = "Hello, do you like tea?"
+text2 = "In the sunlit terraces of the palace."
+text = " <|endoftext|> ".join((text1, text2))
+print(text)
+ids = tokenizer.encode(text)
 decoded = tokenizer.decode(ids)
 
 print(ids)
