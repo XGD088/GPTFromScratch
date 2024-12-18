@@ -1,6 +1,6 @@
 import torch
 import torch.nn as nn
-from GPT.DummyGPTModel import LayerNorm
+from GPTModel import LayerNorm
 
 torch.set_printoptions(sci_mode=False)
 
