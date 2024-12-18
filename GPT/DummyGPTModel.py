@@ -1,3 +1,4 @@
+import tiktoken
 import torch
 import torch.nn as nn
 
@@ -20,7 +21,7 @@ class DummyGPTModel(nn.Module):
         self.pos_emb = nn.Embedding(cfg["context_length"], cfg["emb_dim"])
         self.drop_emb = nn.Dropout(cfg["drop_rate"])
         self.trf_blocks = nn.Sequential(*[DummyTransformerBlock(cfg) for _ in range(cfg["n_layers"])])  # A
-        self.final_norm = DummyLayerNorm(cfg["emb_dim"])  # B
+        self.final_norm = LayerNorm(cfg["emb_dim"])  # B
         self.out_head = nn.Linear(
             cfg["emb_dim"], cfg["vocab_size"], bias=False
         )
@@ -45,9 +46,23 @@ class DummyTransformerBlock(nn.Module):  # C
         return x
 
 
-class DummyLayerNorm(nn.Module):  # E
-    def __init__(self, normalized_shape, eps=1e-5):  # F
+class LayerNorm(nn.Module):  # E
+    def __init__(self, emb_dim, eps=1e-5):  # F
         super().__init__()
+        self.eps = eps
+        #缩放
+        self.scale = nn.Parameter(torch.ones(emb_dim))
+        #偏移
+        self.shift = nn.Parameter(torch.zeros(emb_dim))
+
 
     def forward(self, x):
-        return x
+        #平均数
+        mean = x.mean(dim = -1, keepdim=True)
+        #方差
+        var = x.var(dim = -1, keepdim=True, unbiased=False)
+        #归一化，通过将数据中轴向0点移动，实现了0均值。并且通过除以标准差，统一了数据分布的尺度。
+        norm_x = (x - mean) / torch.sqrt(var + self.eps)
+        return norm_x * self.scale + self.shift
+
+
