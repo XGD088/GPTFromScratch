@@ -19,6 +19,8 @@ GPT_CONFIG_124M = {
     "qkv_bias": False  # Query-Key-Value bias
 }
 
+relu = nn.ReLU()
+
 
 class GPTModel(nn.Module):
     def __init__(self, cfg):
@@ -56,7 +58,7 @@ class TransformerBlock(nn.Module):
             dropout=cfg["drop_rate"],
             qkv_bias=cfg["qkv_bias"])
 
-        self.ff = FeedForward(cfg["emb_dim"])
+        self.ff = FeedForward(cfg)
         self.norm1 = LayerNorm(cfg["emb_dim"])
         self.norm2 = LayerNorm(cfg["emb_dim"])
         self.drop_resid = nn.Dropout(cfg["drop_rate"])
@@ -98,12 +100,12 @@ class LayerNorm(nn.Module):  # E
 class FeedForward(nn.Module):
     def __init__(self, cfg):
         super().__init__()
-        self.layers = nn.Sequential(nn.Linear(cfg["emb_dim"],4 * cfg["emb_dim"]),
-                                    nn.GELU(),
-                                    nn.Linear(4 * cfg["emb_dim"], cfg["emb_dim"]))
-
+        self.linear1 = nn.Linear(cfg["emb_dim"], cfg["emb_dim"] * 4)
+        self.relu = nn.ReLU()
+        self.linear2 = nn.Linear(cfg["emb_dim"] * 4, cfg["emb_dim"])
+        self.dropout = nn.Dropout(cfg["drop_rate"])
     def forward(self, x):
         x = self.relu(self.linear1(x))
         x = self.dropout(x)
         x = self.linear2(x)
-        return x;
+        return x

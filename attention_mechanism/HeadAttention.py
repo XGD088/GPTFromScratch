@@ -26,8 +26,7 @@ class MultiHeadAttention(nn.Module):
         keys = keys.view(b, num_tokens, self.num_heads, self.head_dim)  # D
         values = values.view(b, num_tokens, self.num_heads, self.head_dim)  #
         queries = queries.view(b, num_tokens, self.num_heads, self.head_dim)
-        print(keys.shape)
-        print(keys)
+
 
         keys = keys.transpose(1, 2)  # E
         queries = queries.transpose(1, 2)  # E
