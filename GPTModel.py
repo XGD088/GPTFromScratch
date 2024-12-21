@@ -1,23 +1,9 @@
 import sys
 sys.path.append('/Users/didi/PycharmProjects/GPTFromScratch')
 
-
-import tiktoken
 import torch
 import torch.nn as nn
 from attention_mechanism.HeadAttention import MultiHeadAttention
-
-
-
-GPT_CONFIG_124M = {
-    "vocab_size": 50257,  # Vocabulary size
-    "context_length": 1024,  # Context length
-    "emb_dim": 768,  # Embedding dimension
-    "n_heads": 12,  # Number of attention heads
-    "n_layers": 12,  # Number of layers
-    "drop_rate": 0.1,  # Dropout rate
-    "qkv_bias": False  # Query-Key-Value bias
-}
 
 relu = nn.ReLU()
 
@@ -37,7 +23,9 @@ class GPTModel(nn.Module):
     def forward(self, in_idx):
         batch_size, seq_len = in_idx.shape
         tok_embeds = self.tok_emb(in_idx)
+        print("tok_embeds", tok_embeds.shape)
         pos_embeds = self.pos_emb(torch.arange(seq_len, device=in_idx.device))
+        print("pos_embeds", pos_embeds.shape)
         x = tok_embeds + pos_embeds
         x = self.drop_emb(x)
         x = self.trf_blocks(x)
