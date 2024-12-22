@@ -97,3 +97,29 @@ class FeedForward(nn.Module):
         x = self.dropout(x)
         x = self.linear2(x)
         return x
+
+
+
+def generate_text_simple(model, idx, max_new_tokens, context_size):
+    for _ in range(max_new_tokens):
+        #将输入截断到适宜长度
+        idx_cond = idx[:, -context_size:]
+
+        with torch.no_grad():
+            #推理
+            logits = model(idx_cond)
+            print("logits", logits.shape)
+        #推理后，仅关注最后一个token。返回的是一个(batch, vocab_size)的张量
+        logits = logits[:, -1, :]
+
+        #找到最大的概率。理论上来说softmax是单调递增的函数，处理后仅仅是看起来和为1，所以该步骤也可以省略。
+        probs = torch.softmax(logits, dim=-1)
+
+        #返回最大值的index
+        idx_next = torch.argmax(probs, dim=-1, keepdim=True)
+        #拼接
+        idx = torch.cat((idx, idx_next), dim=1)
+
+    return idx
+
+
