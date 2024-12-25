@@ -3,7 +3,6 @@ import torch
 
 from GPTConfig import GPT2_SMALL_CONFIG
 from GPTModel import GPTModel
-from text_processer.BPETokenizer import create_dataloader_v1
 
 
 def text_to_token_ids(text, tokenizer):
