@@ -1,5 +1,5 @@
 import sys
-sys.path.append('/Users/didi/PycharmProjects/GPTFromScratch')
+sys.path.append('/')
 
 import torch
 import torch.nn as nn
@@ -23,9 +23,7 @@ class GPTModel(nn.Module):
     def forward(self, in_idx):
         batch_size, seq_len = in_idx.shape
         tok_embeds = self.tok_emb(in_idx)
-        print("tok_embeds", tok_embeds.shape)
         pos_embeds = self.pos_emb(torch.arange(seq_len, device=in_idx.device))
-        print("pos_embeds", pos_embeds.shape)
         x = tok_embeds + pos_embeds
         x = self.drop_emb(x)
         x = self.trf_blocks(x)
@@ -108,7 +106,6 @@ def generate_text_simple(model, idx, max_new_tokens, context_size):
         with torch.no_grad():
             #推理
             logits = model(idx_cond)
-            print("logits", logits.shape)
         #推理后，仅关注最后一个token。返回的是一个(batch, vocab_size)的张量
         logits = logits[:, -1, :]
 
