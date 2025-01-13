@@ -43,7 +43,7 @@ targets = torch.tensor([[3626, 6100, 345 ], # [" effort moves you",
 with torch.no_grad():
     logits = model(inputs)
 probas = torch.softmax(logits, dim=-1)
-print(probas.shape)
+
 token_ids = torch.argmax(probas, dim=-1)
 generated_text_batch1 = token_ids_to_text(token_ids[0].flatten(), tokenizer)
 input_text_batch1 = token_ids_to_text(inputs[0].flatten(), tokenizer)
@@ -51,20 +51,28 @@ print(f'Targets batch 1:{input_text_batch1}')
 print(f'Outputs batch 1:{generated_text_batch1}')
 
 input_text_idx = 0
+# 取出对于标准目标值的误差，通过高级索引映射，target_probas_1数组shape为[3]
 target_probas_1 = probas[input_text_idx, [0, 1, 2], targets[input_text_idx]]
 
 input_text_idx = 1
 target_probas_2 = probas[input_text_idx, [0, 1, 2], targets[input_text_idx]]
 
+#下面为计算交叉熵损失(Cross entropy loss)流程
+#拼接两个batch的所有prob并取log
 log_probas = torch.log(torch.cat((target_probas_1, target_probas_2)))
-
+#取平均值
 avg_log_probas = torch.mean(log_probas, dim=-1)
-
+#取负值
 loss = avg_log_probas * -1
 
-
+#使用torch自带的方法取交叉熵
 logits_flat = logits.flatten(0, 1)
+print("logits_flat.shape", logits_flat.shape)
+print("logits.shape", logits.shape)
+
 targets_flat = targets.flatten()
+print("targets.shape", targets.shape)
+print("targets_flat.shape", targets_flat.shape)
 loss_2 = torch.nn.functional.cross_entropy(logits_flat, targets_flat)
 
 print(loss)
