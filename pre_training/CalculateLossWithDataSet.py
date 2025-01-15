@@ -40,13 +40,6 @@ val_loader = create_dataloader_v1(
     shuffle=False
 )
 
-print("Train loader:")
-for x, y in train_loader:
-    print(x.shape, y.shape)
-
-print("\nValidation loader:")
-for x, y in val_loader:
-    print(x.shape, y.shape)
 
 
 def calc_loss_batch(input_batch, target_batch, model, device):

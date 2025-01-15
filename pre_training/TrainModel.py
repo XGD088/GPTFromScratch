@@ -60,13 +60,4 @@ def train_model_simple(model, train_loader, val_loader, optimizer, device, num_e
     return train_losses, val_losses, track_tokens_seen
 
 
-torch.manual_seed(123)
-model = GPTModel(GPT_CONFIG_124M)
-model.to(device)
-optimizer = torch.optim.AdamW(model.parameters(), lr=0.0004, weight_decay=0.1)  # A
-num_epochs = 10
-train_losses, val_losses, tokens_seen = train_model_simple(
-    model, train_loader, val_loader, optimizer, device,
-    num_epochs=num_epochs, eval_freq=5, eval_iter=1,
-    start_context="Every effort moves you"
-)
+
