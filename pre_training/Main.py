@@ -1,5 +1,5 @@
 from pre_training.TrainModel import train_model_simple
-from pre_training.TrainModelFormLoadWeight import countinueTrainFormLoadWeight
+from pre_training.TrainModelFromLoadWeight import countinueTrainFormLoadWeight
 from pre_training.CalculateLossWithDataSet import device
 import torch
 
