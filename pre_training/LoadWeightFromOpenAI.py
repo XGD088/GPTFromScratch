@@ -2,7 +2,7 @@ import numpy as np
 import torch
 
 from GPTModel import GPTModel
-from gpt_download import download_and_load_gpt2
+from pre_training.gpt_download import download_and_load_gpt2
 from pre_training.CalculateLoss import GPT_CONFIG_124M, text_to_token_ids, token_ids_to_text
 from pre_training.CalculateLossWithDataSet import device, tokenizer
 
