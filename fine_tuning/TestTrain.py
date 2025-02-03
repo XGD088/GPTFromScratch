@@ -67,5 +67,7 @@ print(f"Test accuracy: {test_accuracy*100:.2f}%")
 
 # Save the model
 torch.save(model.state_dict(), "review_classifier.pth")
-model_state_dict = torch.load("review_classifier.pth, map_location=device")
-model.load_state_dict(model_state_dict)
+
+# Load the model
+#model_state_dict = torch.load("review_classifier.pth, map_location=device")
+#model.load_state_dict(model_state_dict)
