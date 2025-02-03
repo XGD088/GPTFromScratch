@@ -1,7 +1,7 @@
 from torch.utils.data import DataLoader
 import torch
 
-from fine_tuning.SpamDataSet import train_dataset, val_dataset, test_dataset
+from fine_tuning.classification.SpamDataSet import train_dataset, val_dataset, test_dataset
 
 
 num_workers = 0

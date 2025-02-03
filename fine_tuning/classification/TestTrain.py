@@ -2,9 +2,9 @@ import time
 
 import torch
 
-from fine_tuning.InitModel import model, calc_accuracy_loader
-from fine_tuning.SpamDataLoader import val_loader, train_loader, test_loader
-from fine_tuning.TrainClassifySpam import train_classifier_simple
+from fine_tuning.classification.InitModel import model, calc_accuracy_loader
+from fine_tuning.classification.SpamDataLoader import val_loader, train_loader, test_loader
+from fine_tuning.classification.TrainClassifySpam import train_classifier_simple
 from pre_training.CalculateLossWithDataSet import device
 import matplotlib.pyplot as plt
 

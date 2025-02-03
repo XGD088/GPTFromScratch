@@ -1,8 +1,8 @@
 import torch
 
-from GPTModel import GPTModel, generate_text_simple
-from fine_tuning.SpamDataLoader import train_loader, val_loader, test_loader
-from pre_training.CalculateLoss import text_to_token_ids, token_ids_to_text, tokenizer
+from GPTModel import GPTModel
+from fine_tuning.classification.SpamDataLoader import train_loader, val_loader, test_loader
+from pre_training.CalculateLoss import tokenizer
 from pre_training.CalculateLossWithDataSet import device
 from pre_training.LoadWeightFromOpenAI import load_weights_into_gpt
 from pre_training.gpt_download import download_and_load_gpt2

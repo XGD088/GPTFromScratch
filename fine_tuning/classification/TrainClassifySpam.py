@@ -1,6 +1,6 @@
 import torch
 
-from fine_tuning.InitModel import calc_loss_batch, calc_loss_loader, calc_accuracy_loader, model
+from fine_tuning.classification.InitModel import calc_loss_batch, calc_loss_loader, calc_accuracy_loader
 
 
 def train_classifier_simple(model, train_loader, val_loader, optimizer, device,

@@ -1,7 +1,7 @@
 import pandas as pd
 
-from fine_tuning.PrepareDataSet import data_file_path
-from fine_tuning.PrepareDataSet import random_split_data, create_balance_dataset
+from fine_tuning.classification.PrepareDataSet import data_file_path
+from fine_tuning.classification.PrepareDataSet import random_split_data, create_balance_dataset
 
 df = pd.read_csv(
     data_file_path, sep="\t", header=None, names=["Label", "Text"]

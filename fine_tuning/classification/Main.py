@@ -1,7 +1,7 @@
 import torch
 
-from fine_tuning.InitModel import model
-from fine_tuning.SpamDataSet import tokenizer, train_dataset
+from fine_tuning.classification.InitModel import model
+from fine_tuning.classification.SpamDataSet import tokenizer, train_dataset
 from pre_training.CalculateLossWithDataSet import device
 
 
