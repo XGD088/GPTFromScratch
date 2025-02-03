@@ -21,6 +21,7 @@ end_time = time.time()
 print(f"Training took {end_time - start_time:.0f} seconds")
 
 
+# Plot the training and validation losses
 def plot_values(
         epochs_seen, examples_seen, train_values, val_values,
         label="loss"):
