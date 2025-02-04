@@ -1,3 +1,5 @@
+import os
+
 import tiktoken
 import torch
 
@@ -5,7 +7,17 @@ from GPTModel import GPTModel
 from pre_training.CalculateLoss import GPT_CONFIG_124M
 from text_processer.BPETokenizer import create_dataloader_v1
 
-file_path = "../resources/the-verdict.txt"
+
+# 获取当前文件的绝对路径
+current_file_path = os.path.abspath(__file__)
+
+# 获取当前文件的目录
+current_dir = os.path.dirname(current_file_path)
+
+# 获取 resources 文件夹的绝对路径
+file_path = os.path.join(current_dir, '../resources/the-verdict.txt')
+
+# file_path = "../resources/the-verdict.txt"
 with open(file_path, "r", encoding="utf-8") as file:
     text_data = file.read()
 

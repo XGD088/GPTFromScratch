@@ -1,3 +1,5 @@
+import os
+
 import numpy as np
 import torch
 
@@ -112,8 +114,17 @@ def generate(model, idx, max_new_tokens, context_size, temperature=0.0, top_k=No
 
     return idx
 
+# 获取当前文件的绝对路径
+current_file_path = os.path.abspath(__file__)
+
+# 获取当前文件的目录
+current_dir = os.path.dirname(current_file_path)
+
+# 获取 resources 文件夹的绝对路径
+file_path = os.path.join(current_dir, '../resources/gpt2')
+
 settings, params = download_and_load_gpt2(
-model_size="124M", models_dir="gpt2"
+model_size="124M", models_dir=file_path
 )
 
 
