@@ -9,7 +9,7 @@ class InstructionDataSet(Dataset):
         self.data = data
         self.encoded_texts = []
         for entry in data:
-            instructions_plus_input = format_input_data_in_alpaca_style(entry)
+            instructions_plus_input = format_input_data(entry)
             response_text = f"\n\n### Response:\n{entry['output']}"
             encoded_text = tokenizer.encode(instructions_plus_input + response_text)
             self.encoded_texts.append(encoded_text)
@@ -21,7 +21,7 @@ class InstructionDataSet(Dataset):
         return len(self.data)
 
 
-def format_input_data_in_alpaca_style(entry):
+def format_input_data(entry, style="alpaca"):
     instruction_text = (
         f"Below is an instruction that describes a task. "
         f"Write a response that appropriately completes the request."
@@ -78,7 +78,7 @@ url = (
     "/main/ch07/01_main-chapter-code/instruction-data.json")
 
 data = download_and_load_file(file_path, url)
-model_input = format_input_data_in_alpaca_style(data[50])
+model_input = format_input_data(data[50])
 desired_response = f"\n\n### Response:\n{data[50]['output']}"
 print(model_input + desired_response)
 train_data, val_data, test_data = partition_data_set(data, 0.85, 0.05)

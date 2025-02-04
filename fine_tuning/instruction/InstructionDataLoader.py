@@ -12,8 +12,6 @@ BATCH_SIZE = 8
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 tokenizer = tiktoken.get_encoding("gpt2")
 
-print("Device:", device)
-
 customized_collate_fn = partial(
     custom_collate_fn,
     device=device,
@@ -49,12 +47,12 @@ test_loader = DataLoader(
     num_workers=NUM_WORKERS
 )
 
-print("Train dataset size:", len(train_dataset))
-print("Validation dataset size:", len(val_dataset))
-print("Test dataset size:", len(test_dataset))
-print("Train loader:")
-for i, (inputs, targets) in enumerate(train_loader):
-    if i < 2:
-        print(i, inputs.shape, targets.shape)
-        print("Inputs:", str(inputs))
-        print("Targets:", str(targets))
+# print("Train dataset size:", len(train_dataset))
+# print("Validation dataset size:", len(val_dataset))
+# print("Test dataset size:", len(test_dataset))
+# print("Train loader:")
+# for i, (inputs, targets) in enumerate(train_loader):
+#     if i < 2:
+#         print(i, inputs.shape, targets.shape)
+#         print("Inputs:", str(inputs))
+#         print("Targets:", str(targets))
