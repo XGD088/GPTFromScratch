@@ -1,8 +1,6 @@
 import torch
 from torch.utils.data import Dataset
 
-from fine_tuning.instruction.DownloadDataSet import download_and_load_file
-
 
 class InstructionDataSet(Dataset):
     def __init__(self, data, tokenizer):
@@ -72,29 +70,3 @@ def custom_collate_fn(batch, ignore_index=-100, allowed_max_length=None,
     # stack tensors and move to device
     return torch.stack(inputs_tensor_list).to(device), torch.stack(targets_tensor_list).to(device)
 
-file_path = "instruction-data.json"
-url = (
-    "https://raw.githubusercontent.com/rasbt/LLMs-from-scratch"
-    "/main/ch07/01_main-chapter-code/instruction-data.json")
-
-data = download_and_load_file(file_path, url)
-model_input = format_input_data(data[50])
-desired_response = f"\n\n### Response:\n{data[50]['output']}"
-print(model_input + desired_response)
-train_data, val_data, test_data = partition_data_set(data, 0.85, 0.05)
-print(f"Number of training samples: {len(train_data)}")
-print(f"Number of validation samples: {len(val_data)}")
-print(f"Number of test samples: {len(test_data)}")
-
-inputs_1 = [0, 1, 2, 3, 4]
-inputs_2 = [5, 6]
-inputs_3 = [7, 8, 9]
-batch = (
-    inputs_1,
-    inputs_2,
-    inputs_3
-)
-inputs_tensors, target_tensors = custom_collate_fn(batch)
-
-print("inputs_tensors:\n",inputs_tensors)
-print("target_tensors:\n",target_tensors)

@@ -1,11 +1,12 @@
+import re
 import time
 
 import tiktoken
 import torch
 
-from fine_tuning.instruction.InitModel import model
-from fine_tuning.instruction.InstructionDataLoader import device, train_loader, val_loader, tokenizer
-from fine_tuning.instruction.InstructionDataSet import format_input_data, val_data
+from fine_tuning.instruction.InitModel import model, CHOOSE_MODEL
+from fine_tuning.instruction.InstructionDataLoader import device, train_loader, val_loader, tokenizer, val_data
+from fine_tuning.instruction.InstructionDataSet import format_input_data
 from pre_training.TrainModel import train_model_simple
 
 start_time = time.time()
@@ -19,7 +20,14 @@ train_losses, val_losses, tokens_seen = train_model_simple(
     num_epochs=num_epochs, eval_freq=5, eval_iter=5,
     start_context=format_input_data(val_data[0]),tokenizer=tiktoken.get_encoding("gpt2")
 )
+
+file_name = f"{re.sub(r'[ ()]', '', CHOOSE_MODEL) }-sft.pth"
+torch.save(model.state_dict(), file_name)
+print(f"Model saved as {file_name}")
+
 end_time = time.time()
 execution_time_minutes = (end_time - start_time) / 60
 print(f"Training completed in {execution_time_minutes:.2f} minutes.")
+
+
 

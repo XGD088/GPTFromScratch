@@ -1,8 +1,8 @@
 import torch
 
 from GPTModel import GPTModel
-from fine_tuning.instruction.InstructionDataLoader import tokenizer, device, train_loader, val_loader
-from fine_tuning.instruction.InstructionDataSet import format_input_data, val_data
+from fine_tuning.instruction.InstructionDataLoader import tokenizer, device, train_loader, val_loader, val_data
+from fine_tuning.instruction.InstructionDataSet import format_input_data
 from pre_training.CalculateLoss import token_ids_to_text, text_to_token_ids
 from pre_training.CalculateLossWithDataSet import calc_loss_loader
 from pre_training.LoadWeightFromOpenAI import load_weights_into_gpt, generate
@@ -31,34 +31,36 @@ settings, params = download_and_load_gpt2(
 )
 model = GPTModel(BASE_CONFIG)
 load_weights_into_gpt(model, params)
-model.eval()
+model.load_state_dict(torch.load("gpt2-medium355M-sft.pth", map_location=device, weights_only=False))
+print("model loaded")
+# model.eval()
 
-torch.manual_seed(123)
-input_text = format_input_data(val_data[0])
-print("input_text:\n", input_text)
-
-token_ids = generate(
-    model=model,
-    idx=text_to_token_ids(input_text, tokenizer),
-    max_new_tokens=35,
-    context_size=BASE_CONFIG["context_length"],
-    eos_id=50256,
-)
-
-# 生成的文本中包含了输入文本
-generated_text = token_ids_to_text(token_ids, tokenizer)
-# 截取response部分
-response_text = generated_text[len(input_text):]
-print("Response text:\n", response_text)
-
-model.to(device)
-torch.manual_seed(123)
-with torch.no_grad():
-    train_loss = calc_loss_loader(
-        train_loader, model, device, num_batches=5
-    )
-val_loss = calc_loss_loader(
-    val_loader, model, device, num_batches=5
-)
-print("Training loss:", train_loss)
-print("Validation loss:", val_loss)
+# torch.manual_seed(123)
+# input_text = format_input_data(val_data[0])
+# print("input_text:\n", input_text)
+#
+# token_ids = generate(
+#     model=model,
+#     idx=text_to_token_ids(input_text, tokenizer),
+#     max_new_tokens=35,
+#     context_size=BASE_CONFIG["context_length"],
+#     eos_id=50256,
+# )
+#
+# # 生成的文本中包含了输入文本
+# generated_text = token_ids_to_text(token_ids, tokenizer)
+# # 截取response部分
+# response_text = generated_text[len(input_text):]
+# print("Response text:\n", response_text)
+#
+# model.to(device)
+# torch.manual_seed(123)
+# with torch.no_grad():
+#     train_loss = calc_loss_loader(
+#         train_loader, model, device, num_batches=5
+#     )
+# val_loss = calc_loss_loader(
+#     val_loader, model, device, num_batches=5
+# )
+# print("Training loss:", train_loss)
+# print("Validation loss:", val_loss)
