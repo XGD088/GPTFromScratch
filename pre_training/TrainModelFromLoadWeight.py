@@ -1,3 +1,4 @@
+import tiktoken
 import torch
 
 from GPTModel import GPTModel
@@ -21,7 +22,7 @@ def countinueTrainFormLoadWeight(device, num_epochs, eval_freq, eval_iter):
     train_losses, val_losses, tokens_seen = train_model_simple(
         model, train_loader, val_loader, optimizer, device,
         num_epochs=num_epochs, eval_freq=eval_freq, eval_iter=eval_iter,
-        start_context="Every effort moves you"
+        start_context="Every effort moves you", tokenizer=tiktoken.get_encoding("gpt2")
     )
 
 

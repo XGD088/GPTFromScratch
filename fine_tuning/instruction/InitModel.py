@@ -1,9 +1,10 @@
 import torch
 
 from GPTModel import GPTModel
-from fine_tuning.instruction.InstructionDataLoader import tokenizer
+from fine_tuning.instruction.InstructionDataLoader import tokenizer, device, train_loader, val_loader
 from fine_tuning.instruction.InstructionDataSet import format_input_data, val_data
 from pre_training.CalculateLoss import token_ids_to_text, text_to_token_ids
+from pre_training.CalculateLossWithDataSet import calc_loss_loader
 from pre_training.LoadWeightFromOpenAI import load_weights_into_gpt, generate
 from pre_training.gpt_download import download_and_load_gpt2
 
@@ -49,3 +50,15 @@ generated_text = token_ids_to_text(token_ids, tokenizer)
 # 截取response部分
 response_text = generated_text[len(input_text):]
 print("Response text:\n", response_text)
+
+model.to(device)
+torch.manual_seed(123)
+with torch.no_grad():
+    train_loss = calc_loss_loader(
+        train_loader, model, device, num_batches=5
+    )
+val_loss = calc_loss_loader(
+    val_loader, model, device, num_batches=5
+)
+print("Training loss:", train_loss)
+print("Validation loss:", val_loss)

@@ -32,7 +32,7 @@ def generate_and_print_sample(model, tokenizer, device, start_context):
 
 
 def train_model_simple(model, train_loader, val_loader, optimizer, device, num_epochs,
-                       eval_freq, eval_iter, start_context):
+                       eval_freq, eval_iter, start_context, tokenizer):
     # Initializes lists to track losses and tokens seen
     train_losses, val_losses, track_tokens_seen = [], [], []
     tokens_seen, global_step = 0, -1
@@ -56,7 +56,7 @@ def train_model_simple(model, train_loader, val_loader, optimizer, device, num_e
                 track_tokens_seen.append(tokens_seen)
                 print(f"Ep {epoch + 1} (Step {global_step:06d}): "
                       f"Train loss {train_loss:.3f}, Val loss {val_loss:.3f}")
-        generate_and_print_sample(model, train_loader.dataset.tokenizer, device, start_context)
+        generate_and_print_sample(model, tokenizer, device, start_context)
     return train_losses, val_losses, track_tokens_seen
 
 

@@ -45,19 +45,26 @@ class SpamDataset(Dataset):
 
 tokenizer = tiktoken.get_encoding("gpt2")
 
+# 获取当前文件的绝对路径
+current_file_path = os.path.abspath(__file__)
+
+# 获取当前文件的目录
+current_dir = os.path.dirname(current_file_path)
+
+
 train_dataset = SpamDataset(
-    csv_file="train.csv",
+    csv_file=os.path.join(current_dir, 'train.csv'),
     max_length=None,
     tokenizer=tokenizer
 )
 
 val_dataset = SpamDataset(
-    csv_file="validation.csv",
+    csv_file=os.path.join(current_dir, 'validation.csv'),
     max_length=train_dataset.max_length,
     tokenizer=tokenizer
 )
 test_dataset = SpamDataset(
-    csv_file="test.csv",
+    csv_file=os.path.join(current_dir, 'test.csv'),
     max_length=train_dataset.max_length,
     tokenizer=tokenizer
 )

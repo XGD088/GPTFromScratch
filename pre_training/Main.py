@@ -1,3 +1,5 @@
+import tiktoken
+
 from pre_training.TrainModel import train_model_simple
 from pre_training.TrainModelFromLoadWeight import countinueTrainFormLoadWeight
 from pre_training.CalculateLossWithDataSet import device
@@ -21,7 +23,7 @@ def test_gpt_model():
     train_losses, val_losses, tokens_seen = train_model_simple(
         model, train_loader, val_loader, optimizer, device,
         num_epochs=num_epochs, eval_freq=5, eval_iter=1,
-        start_context="Every effort moves you"
+        start_context="Every effort moves you", tokenizer=tiktoken.get_encoding("gpt2")
     )
 
     torch.save(model.state_dict(), "model.pth")
