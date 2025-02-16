@@ -2,9 +2,6 @@ import torch
 
 from GPTModel import GPTModel
 from fine_tuning.instruction.InstructionDataLoader import tokenizer, device, train_loader, val_loader, val_data
-from fine_tuning.instruction.InstructionDataSet import format_input_data
-from pre_training.CalculateLoss import token_ids_to_text, text_to_token_ids
-from pre_training.CalculateLossWithDataSet import calc_loss_loader
 from pre_training.LoadWeightFromOpenAI import load_weights_into_gpt, generate
 from pre_training.gpt_download import download_and_load_gpt2
 

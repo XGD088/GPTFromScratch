@@ -1,10 +1,6 @@
 import tiktoken
 import torch
 
-from GPTConfig import GPT2_SMALL_CONFIG
-from GPTModel import GPTModel
-
-
 def text_to_token_ids(text, tokenizer):
     encoded_text = tokenizer.encode(text, allowed_special={'<|endoftext|>'})
     return torch.tensor(encoded_text).unsqueeze(0)
