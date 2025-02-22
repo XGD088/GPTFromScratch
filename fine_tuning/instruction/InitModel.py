@@ -28,7 +28,7 @@ settings, params = download_and_load_gpt2(
 )
 model = GPTModel(BASE_CONFIG)
 load_weights_into_gpt(model, params)
-model.load_state_dict(torch.load("gpt2-medium355M-sft.pth", map_location=device, weights_only=False))
+model.load_state_dict(torch.load("../../resources/gpt2-medium355M-sft.pth", map_location=device, weights_only=False))
 print("model loaded")
 # model.eval()
 

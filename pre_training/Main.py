@@ -1,17 +1,11 @@
 import tiktoken
-
-from pre_training.TrainModel import train_model_simple
-from pre_training.TrainModelFromLoadWeight import countinueTrainFormLoadWeight
-from pre_training.CalculateLossWithDataSet import device
 import torch
 
-from GPTModel import generate_text_simple, GPTModel
-from pre_training.CalculateLoss import text_to_token_ids, token_ids_to_text, GPT_CONFIG_124M
-from pre_training.CalculateLossWithDataSet import calc_loss_batch, calc_loss_loader, train_loader, val_loader, device
-
-if __name__ == "__main__":
-    countinueTrainFormLoadWeight(device, 1, 5, 1)
-
+from GPTModel import GPTModel
+from pre_training.CalculateLoss import GPT_CONFIG_124M
+from pre_training.CalculateLossWithDataSet import train_loader, val_loader, device
+from pre_training.TrainModel import train_model_simple
+from pre_training.TrainModelFromLoadWeight import countinueTrainFormLoadWeight, model_path, model_and_optimizer_path
 
 
 def test_gpt_model():
@@ -26,14 +20,23 @@ def test_gpt_model():
         start_context="Every effort moves you", tokenizer=tiktoken.get_encoding("gpt2")
     )
 
-    torch.save(model.state_dict(), "model.pth")
+    torch.save(model.state_dict(), model_path)
     model = GPTModel(GPT_CONFIG_124M)
-    model.load_state_dict(torch.load("model.pth", map_location=device))
+    model.load_state_dict(torch.load(model_path, map_location=device))
     model.eval()
 
     torch.save({
         "model_state_dict": model.state_dict(),
         "optimizer_state_dict": optimizer.state_dict(),
     },
-        "model_and_optimizer.pth"
+        model_and_optimizer_path
     )
+
+
+if __name__ == "__main__":
+    test_gpt_model()
+    countinueTrainFormLoadWeight(device, 1, 5, 1)
+
+
+
+

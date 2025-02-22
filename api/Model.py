@@ -7,7 +7,7 @@ from GPTModel import GPTModel
 from pre_training.CalculateLoss import text_to_token_ids, token_ids_to_text
 from pre_training.LoadWeightFromOpenAI import load_weights_into_gpt, generate
 from pre_training.gpt_download import download_and_load_gpt2
-
+from utils.os_util import get_current_dir
 
 CHOOSE_MODEL = "gpt2-medium (355M)"
 INPUT_PROMPT = "Every effort moves"
@@ -51,15 +51,6 @@ def init_model():
     return model
 
 
-
-def get_current_dir():
-    # 获取当前文件的绝对路径
-    current_file_path = os.path.abspath(__file__)
-
-    # 获取当前文件的目录
-    current_dir = os.path.dirname(current_file_path)
-
-    return current_dir
 
 
 model = init_model()
