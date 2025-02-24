@@ -1,9 +1,12 @@
+import os
+
 import torch
 
 from GPTModel import GPTModel
 from fine_tuning.instruction.InstructionDataLoader import tokenizer, device, train_loader, val_loader, val_data
 from pre_training.LoadWeightFromOpenAI import load_weights_into_gpt, generate
 from pre_training.gpt_download import download_and_load_gpt2
+from utils.os_util import get_current_dir
 
 CHOOSE_MODEL = "gpt2-medium (355M)"
 INPUT_PROMPT = "Every effort moves"
@@ -24,7 +27,7 @@ BASE_CONFIG.update(model_configs[CHOOSE_MODEL])
 
 model_size = CHOOSE_MODEL.split(" ")[-1].lstrip("(").rstrip(")")
 settings, params = download_and_load_gpt2(
-    model_size=model_size, models_dir="../../resources/gpt2"
+    model_size=model_size, models_dir=os.path.join(get_current_dir(), '../../resources/gpt2')
 )
 model = GPTModel(BASE_CONFIG)
 load_weights_into_gpt(model, params)

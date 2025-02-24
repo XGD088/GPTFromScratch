@@ -1,11 +1,13 @@
+import os
+
 import torch
 
 from GPTModel import GPTModel
 from fine_tuning.classification.SpamDataLoader import train_loader, val_loader, test_loader
-from pre_training.CalculateLoss import tokenizer
-from pre_training.CalculateLossWithDataSet import device
+from pre_training.CalculateLossWithDataSet import device, tokenizer
 from pre_training.LoadWeightFromOpenAI import load_weights_into_gpt
 from pre_training.gpt_download import download_and_load_gpt2
+from utils.os_util import get_current_dir
 
 CHOOSE_MODEL = "gpt2-small (124M)"
 INPUT_PROMPT = "Every effort moves"
@@ -26,8 +28,10 @@ BASE_CONFIG.update(model_configs[CHOOSE_MODEL])
 
 model_size = CHOOSE_MODEL.split(" ")[-1].lstrip("(").rstrip(")")
 
+
+
 settings, params = download_and_load_gpt2(
-    model_size=model_size, models_dir="../../resources/gpt2"
+    model_size=model_size, models_dir=os.path.join(get_current_dir(), '../../resources/gpt2')
 )
 model = GPTModel(BASE_CONFIG)
 load_weights_into_gpt(model, params)
