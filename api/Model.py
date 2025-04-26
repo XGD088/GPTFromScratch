@@ -2,6 +2,7 @@ import os
 
 import tiktoken
 import torch
+from transformers import GPT2TokenizerFast
 
 from GPTModel import GPTModel
 from pre_training.CalculateLoss import text_to_token_ids, token_ids_to_text
@@ -26,6 +27,8 @@ model_configs = {
 }
 
 tokenizer = tiktoken.get_encoding("gpt2")
+#支持中文
+# tokenizer = GPT2TokenizerFast.from_pretrained("gpt2")
 device="cpu"
 
 
@@ -38,19 +41,20 @@ def init_model():
     )
     model = GPTModel(BASE_CONFIG)
     load_weights_into_gpt(model, params)
-    sft_pth = os.path.join(get_current_dir(), '../resources/gpt2-medium355M-sft.pth')
-
-    # check if the model sft is not exist
-    if os.path.exists(sft_pth):
-        model.load_state_dict(torch.load(sft_pth, map_location=device, weights_only=False))
-    else:
-        print("sft.pth not exist")
+    # read_extra_weight(model)
 
     print("model loaded")
     model.eval()
     return model
 
 
+def read_extra_weight(model):
+    sft_pth = os.path.join(get_current_dir(), '../resources/gpt2-medium355M-sft.pth')
+    # check if the model sft is not exist
+    if os.path.exists(sft_pth):
+        model.load_state_dict(torch.load(sft_pth, map_location=device, weights_only=False))
+    else:
+        print("sft.pth not exist")
 
 
 model = init_model()
@@ -62,7 +66,7 @@ def predict_text(input_text):
     token_ids = generate(
         model=model,
         idx=text_to_token_ids(input_text, tokenizer),
-        max_new_tokens=35,
+        max_new_tokens=100,
         context_size=BASE_CONFIG["context_length"],
         eos_id=50256,
     )
